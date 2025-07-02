@@ -1,3 +1,6 @@
-click
-openai
+requests
+rich
+dnspython
+scapy
+# openai  # Uncomment if you want to use OpenAI API fallback
 # Add more dependencies as modules are developed 
