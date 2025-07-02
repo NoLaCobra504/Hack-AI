@@ -26,8 +26,27 @@ def run(target, report_path=None):
 
     api_key = os.environ.get('SHODAN_API_KEY')
     if not api_key:
-        api_key = 'zuBHnBeVI5V3H8RJTxZry70njCic5Bf5'
-        print("[Shodan Recon] Warning: Using default (public) Shodan API key. For privacy and quota, set your own SHODAN_API_KEY environment variable.")
+        print("[Shodan Recon] Error: No SHODAN_API_KEY environment variable set. Please set your own Shodan API key.")
+        findings['Shodan'] = 'Error: No SHODAN_API_KEY environment variable set.'
+        raw_output['Shodan'] = findings['Shodan']
+        report_utils.append_section(
+            report_path,
+            section_title="Shodan Reconnaissance",
+            methodology="Queried Shodan API for host information.",
+            commands=commands,
+            findings=findings,
+            notable=notable,
+            recommendations=recommendations,
+            raw_output=raw_output
+        )
+        return {
+            "status": "error",
+            "target": target,
+            "report": report_path,
+            "findings": findings,
+            "notable": notable,
+            "recommendations": recommendations
+        }
 
     url = SHODAN_API_URL.format(target=target, api_key=api_key)
     try:
